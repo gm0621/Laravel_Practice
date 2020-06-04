@@ -5,9 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Answer;
 use App\Question;
+use Auth;
 
 class AnswerController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -25,10 +36,11 @@ class AnswerController extends Controller
             ]);
             $answer = new Answer();
             $answer->content = $request->content;
+            $answer->user()->associate(Auth::id());
 
             $question = Question::findOrFail($request->question_id);
 
-            // if successful we want to redirect        
+            // if successful we want to redirect
             if($question->answers()->save($answer)){
                 return redirect()->route('questions.show', $question->id);
             }else{
@@ -44,7 +56,7 @@ class AnswerController extends Controller
 
 
 
-        
+
 
     }
 

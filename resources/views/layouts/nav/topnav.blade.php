@@ -1,3 +1,4 @@
+
             <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
                 <div class="container">
                     <a class="navbar-brand" href="{{ url('/') }}">
@@ -15,14 +16,16 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Recent</a>
-                            </li>                            
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Popular</a>
-                            </li>                              
+                            </li>
                         </ul>
 
                         <!-- Right Side Of Navbar -->
                         <ul class="navbar-nav ml-auto">
+                            <a href="{{ route('questions.create') }}" class="btn btn-primary btn-sm" style="margin-top:10px; margin-bottom:5px;"> Ask A Question</a>
+
                             <!-- Authentication Links -->
                             @guest
                                 <li class="nav-item">
@@ -56,5 +59,5 @@
                     </div>
                 </div>
             </nav>
-                 
+
             <br />

@@ -4,9 +4,22 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Question;
+use Auth;
 
 class QuestionController extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => ['index','show']]);
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -45,20 +58,21 @@ class QuestionController extends Controller
         $this->validate($request,[
             "title" => "required|max:255"
         ]);
-            
+
         // process the data and submit it
         $question = new Question();
         $question->title = $request->title;
         $question->description = $request->description;
-        ;
+        // $question->user()->associate(Auth::user()->id);
+        $question->user()->associate(Auth::id());
 
-        // if successful we want to redirect        
+        // if successful we want to redirect
         if($question->save()){
             return redirect()->route("questions.show",$question->id);
         }else{
             return redirect()->route('questions.create');
         }
-    
+
     }
 
     /**
@@ -71,7 +85,7 @@ class QuestionController extends Controller
     {
         // Use the model to get 1 record from the database
         $question = Question::findOrFail($id);
-        
+
         // show the view and pass the record to the view
         return view('questions.show')->with('question', $question);
     }
@@ -84,7 +98,13 @@ class QuestionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $question = Question::findOrFail($id);
+
+        if($question->user->id != Auth::id()){
+            return abort(403);
+        }
+        return view('questions.edit');
+
     }
 
     /**
@@ -96,7 +116,11 @@ class QuestionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if($question->user->id != Auth::id()){
+            return abort(403);
+        }
+
+        //update the question
     }
 
     /**

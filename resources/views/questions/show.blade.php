@@ -6,7 +6,8 @@
     <p class="lead">
         {{ $question->description }}
     </p>
-
+    {{-- $question->user->name --}}
+    Submitted by <span class="text-primary">{{ $question->user->name }}</span> on <span class="text-success">{{ $question->created_at->diffForHumans() }}</span>
     <hr />
 
     <!-- display all of the answers for this question -->
@@ -16,6 +17,7 @@
                 <p>
                     {{ $answer->content }}
                 </p>
+            <h6>Answered By <span class="text-primary">{{ $answer->user->name }}</span>, <span class="text-success">{{$answer->created_at->diffForHumans()}}<span></h6>
             </div>
         @endforeach
     @else
